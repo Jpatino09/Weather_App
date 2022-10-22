@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:weather_application/models/weather_by_city.dart';
 //import 'package:weather_application/screens/cities.dart';
 
 class DataServices extends ChangeNotifier {
@@ -25,7 +26,9 @@ class DataServices extends ChangeNotifier {
 
     final response = await http.get(url);
 
-    final Map<String, dynamic> decodedData = json.decode(response.body);
-    print('Llego hasta aqui MK');
+    final citiesResponse = WeatherByCity.fromJson(response.body);
+
+    //final Map<String, dynamic> decodedData = json.decode(response.body);
+    print(citiesResponse);
   }
 }
