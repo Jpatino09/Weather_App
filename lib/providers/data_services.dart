@@ -29,6 +29,6 @@ class DataServices extends ChangeNotifier {
     final citiesResponse = WeatherByCity.fromJson(response.body);
 
     //final Map<String, dynamic> decodedData = json.decode(response.body);
-    print(citiesResponse);
+    print(citiesResponse.base);
   }
 }

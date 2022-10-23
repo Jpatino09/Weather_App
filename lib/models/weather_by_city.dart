@@ -41,16 +41,16 @@ class WeatherByCity {
       WeatherByCity.fromMap(json.decode(str));
 
   factory WeatherByCity.fromMap(Map<String, dynamic> json) => WeatherByCity(
-        coord: json["coord"] = Coord.fromMap(json["coord"]),
-        weather: json["weather"] =
+        coord: Coord.fromMap(json["coord"]),
+        weather:
             List<Weather>.from(json["weather"].map((x) => Weather.fromMap(x))),
         base: json["base"],
-        main: json["main"] = Main.fromMap(json["main"]),
+        main: Main.fromMap(json["main"]),
         visibility: json["visibility"],
-        wind: json["wind"] = Wind.fromMap(json["wind"]),
-        clouds: json["clouds"] = Clouds.fromMap(json["clouds"]),
+        wind: Wind.fromMap(json["wind"]),
+        clouds: Clouds.fromMap(json["clouds"]),
         dt: json["dt"],
-        sys: json["sys"] = Sys.fromMap(json["sys"]),
+        sys: Sys.fromMap(json["sys"]),
         timezone: json["timezone"],
         id: json["id"],
         name: json["name"],
