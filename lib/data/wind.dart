@@ -4,12 +4,12 @@ class Wind {
   Wind({
     required this.speed,
     required this.deg,
-    required this.gust,
+    this.gust,
   });
 
   double speed;
   int deg;
-  double gust;
+  double? gust;
 
   factory Wind.fromJson(String str) => Wind.fromMap(json.decode(str));
 

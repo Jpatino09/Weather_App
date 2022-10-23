@@ -2,18 +2,18 @@ import 'dart:convert';
 
 class Sys {
   Sys({
-    required this.type,
-    required this.id,
-    required this.country,
-    required this.sunrise,
-    required this.sunset,
+    this.type,
+    this.id,
+    this.country,
+    this.sunrise,
+    this.sunset,
   });
 
-  int type;
-  int id;
-  String country;
-  int sunrise;
-  int sunset;
+  int? type;
+  int? id;
+  String? country;
+  int? sunrise;
+  int? sunset;
 
   factory Sys.fromJson(String str) => Sys.fromMap(json.decode(str));
 
