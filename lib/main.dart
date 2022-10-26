@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       routes: {
         'home': (context) => Home(),
         'cities': (context) => Cities(),
-        'data': (context) => Data(),
+        'data': (context) => Data(Provider.of<DataServices>(context).citySelected),
       },
     );
   }

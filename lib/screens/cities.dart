@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/data_services.dart';
 import 'data.dart';
 
 void main() => runApp(Cities());
@@ -45,7 +46,7 @@ class Cities extends StatelessWidget {
                 color: Color.fromARGB(255, 34, 102, 158),
               ),
               onPressed: () {
-                final route = MaterialPageRoute(builder: (context) => Data());
+                final route = MaterialPageRoute(builder: (context) => Data(Provider.of<DataServices>(context).citySelected));
                 Navigator.push(context, route);
                 splashColor = Colors.red;
               },
@@ -55,9 +56,9 @@ class Cities extends StatelessWidget {
                 SafeArea(
                   child: ListView(
                     children: [
-                      ...cities.map((listCities) => ListTile(
+                      ...cities.map((city) => ListTile(
                             title: Text(
-                              listCities,
+                              city,
                               style: const TextStyle(
                                   fontSize: 22,
                                   color: Colors.white,
@@ -72,8 +73,9 @@ class Cities extends StatelessWidget {
                               color: Colors.white,
                             ),
                             onTap: () {
+                              Provider.of<DataServices>(context, listen: false).getServices_weather(city);
                               final route = MaterialPageRoute(
-                                  builder: (context) => Data());
+                                  builder: (context) => Data(city));
                               Navigator.push(context, route);
                             },
                           ))
