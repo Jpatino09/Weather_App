@@ -41,7 +41,6 @@ class WeatherByCity {
       WeatherByCity.fromMap(json.decode(str));
 
   factory WeatherByCity.fromMap(Map<String, dynamic> json) => WeatherByCity(
-        coord: Coord.fromMap(json["coord"]),
         weather:
             List<Weather>.from(json["weather"].map((x) => Weather.fromMap(x))),
         base: json["base"],
@@ -55,5 +54,6 @@ class WeatherByCity {
         id: json["id"],
         name: json["name"],
         cod: json["cod"],
+        coord: Coord.fromMap(json["coord"]),
       );
 }

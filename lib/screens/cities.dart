@@ -1,11 +1,19 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/data_services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'data.dart';
 
 void main() => runApp(Cities());
 
-class Cities extends StatelessWidget {
+class Cities extends StatefulWidget {
+  @override
+  State<Cities> createState() => _CitiesState();
+}
+
+class _CitiesState extends State<Cities> {
   final cities = [
     'Medellin',
     'Bogota',
@@ -25,9 +33,55 @@ class Cities extends StatelessWidget {
     'Managua'
   ];
 
+  String? _currentAddress;
+
+  Position? _currentPosition;
+
   @override
   Widget build(BuildContext context) {
     Color? splashColor;
+
+    Future<bool> _handleLocationPermission() async {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Location services are disabled. Please enable the services')));
+        return false;
+      }
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Location permissions are denied')));
+          return false;
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                'Location permissions are permanently denied, we cannot request permissions.')));
+        return false;
+      }
+      return true;
+    }
+
+    Future<void> _getCurrentPosition() async {
+      final hasPermission = await _handleLocationPermission();
+      if (!hasPermission) return;
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) {
+        setState(() => _currentPosition = position);
+      }).catchError((e) {
+        debugPrint(e);
+      });
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
@@ -46,7 +100,12 @@ class Cities extends StatelessWidget {
                 color: Color.fromARGB(255, 34, 102, 158),
               ),
               onPressed: () {
-                final route = MaterialPageRoute(builder: (context) => Data(Provider.of<DataServices>(context).citySelected));
+                _getCurrentPosition();
+                print(_currentAddress);
+                print(_currentPosition.toString());
+                final route = MaterialPageRoute(
+                    builder: (context) =>
+                        Data(Provider.of<DataServices>(context).citySelected));
                 Navigator.push(context, route);
                 splashColor = Colors.red;
               },
@@ -73,7 +132,8 @@ class Cities extends StatelessWidget {
                               color: Colors.white,
                             ),
                             onTap: () {
-                              Provider.of<DataServices>(context, listen: false).getServices_weather(city);
+                              Provider.of<DataServices>(context, listen: false)
+                                  .getServices_weather(city);
                               final route = MaterialPageRoute(
                                   builder: (context) => Data(city));
                               Navigator.push(context, route);

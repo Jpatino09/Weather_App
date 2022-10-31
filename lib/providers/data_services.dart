@@ -21,10 +21,13 @@ class DataServices extends ChangeNotifier {
   String visibility = '';
   String weatherData = '';
   String timeZone = '';
+  String icon = '';
 
   DataServices() {
     print('Inicialzando servicios');
-    getServices_weather(citySelected);
+    if (citySelected != '') {
+      getServices_weather(citySelected);
+    }
   }
 
   // ignore: non_constant_identifier_names
@@ -42,7 +45,8 @@ class DataServices extends ChangeNotifier {
 
     final citiesResponse = WeatherByCity.fromJson(response.body);
 
-    final decodedData = json.decode(response.body); // este creo que se puede borrar
+    final decodedData =
+        json.decode(response.body); // este creo que se puede borrar
     print(decodedData);
     temp = citiesResponse.main.temp.toString();
     humidity = citiesResponse.main.humidity.toString();
@@ -51,6 +55,7 @@ class DataServices extends ChangeNotifier {
     weatherData = citiesResponse.weather[0].description;
     timeZone = citiesResponse.timezone.toString();
     citySelected = citiesResponse.name;
+    icon = citiesResponse.weather[0].icon;
     //coordinatesLon = 'Longitude: ' + citiesResponse.coord.lon.toString();
     //coordinatesLat = 'Latitude: ' + citiesResponse.coord.lat.toString();
     /* print('City Selected: ' + citySelected);

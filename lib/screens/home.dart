@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(
-                top: 250, bottom: 200, right: 50, left: 50),
+                top: 180, bottom: 125, right: 50, left: 50),
             child: Column(
               children: const [
                 CircleAvatar(
