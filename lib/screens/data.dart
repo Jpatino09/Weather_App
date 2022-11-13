@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_application/providers/data_services.dart';
+import 'cities.dart';
 import 'home.dart';
 
 void main() => runApp(Data(''));
@@ -13,27 +16,23 @@ class Data extends StatelessWidget {
   String visibility = '';
   String weatherData = '';
   String timeZone = '';
-  String icon = '';
 
-  Data(String city) {
-    selectedCity = city;
-  }
+  Data(String city);
 
   @override
   Widget build(BuildContext context) {
-    temp = '${Provider.of<DataServices>(context).temp} kelvins';
+    temp = '${Provider.of<DataServices>(context).temp}°';
     humidity = '${Provider.of<DataServices>(context).humidity}%';
     windSpeed = '${Provider.of<DataServices>(context).windSpeed} Mts/sec';
     visibility = '${Provider.of<DataServices>(context).visibility} Mts';
     weatherData = Provider.of<DataServices>(context).weatherData;
     timeZone = Provider.of<DataServices>(context).timeZone;
-    icon = Provider.of<DataServices>(context).icon;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
       home: Scaffold(
-          backgroundColor: Color.fromARGB(255, 89, 134, 171),
+          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
           body: Stack(children: [
             const SizedBox(
               height: double.infinity,
@@ -51,14 +50,14 @@ class Data extends StatelessWidget {
                       onSubmitted: (value) {
                         Provider.of<DataServices>(context, listen: false)
                             .getServices_weather(value);
-                        selectedCity = value;
+                        selectedCity = value.toUpperCase();
                       },
                       decoration: InputDecoration(
                         suffix: const Icon(
                           Icons.search,
                           color: Colors.white,
                         ),
-                        hintStyle: const TextStyle(color: Colors.black),
+                        hintStyle: const TextStyle(color: Colors.white),
                         hintText: 'search'.toUpperCase(),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -72,23 +71,26 @@ class Data extends StatelessWidget {
                             borderSide: const BorderSide(color: Colors.white)),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     SizedBox(
-                      width: 250,
+                      width: 270,
                       height: 280,
                       child: Card(
                           elevation: 5,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
+                              borderRadius: BorderRadius.circular(12)),
                           child: Column(
                             children: [
-                              const SizedBox(height: 50),
+                              const SizedBox(height: 15),
                               Text(
-                                'City Name: $selectedCity',
+                                selectedCity,
                                 style: const TextStyle(
                                     fontSize: 20, fontFamily: 'Play'),
+                              ),
+                              Image.network(
+                                Provider.of<DataServices>(context).assetUrl,
                               ),
                               Text(
                                 'Temperature: $temp',
@@ -120,7 +122,6 @@ class Data extends StatelessWidget {
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
-                              Text('icon : $icon')
                             ],
                           )),
                     ),

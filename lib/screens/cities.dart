@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_application/data/coord.dart';
 import '../providers/data_services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'data.dart';
@@ -33,10 +34,10 @@ class _CitiesState extends State<Cities> {
     'Managua'
   ];
 
-  String? _currentAddress;
-
+  String lat = '';
+  String lon = '';
   Position? _currentPosition;
-
+  Position? position;
   @override
   Widget build(BuildContext context) {
     Color? splashColor;
@@ -49,22 +50,22 @@ class _CitiesState extends State<Cities> {
       if (!serviceEnabled) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
-                'Location services are disabled. Please enable the services')));
+                'Los servicios de localización están desactivados. Por favor, active los servicios')));
         return false;
       }
       permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Location permissions are denied')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Los permisos de localización están denegados')));
           return false;
         }
       }
       if (permission == LocationPermission.deniedForever) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
-                'Location permissions are permanently denied, we cannot request permissions.')));
+                'Los permisos de localización están denegados, no se pueden solicitar los permisos.')));
         return false;
       }
       return true;
@@ -75,11 +76,47 @@ class _CitiesState extends State<Cities> {
       if (!hasPermission) return;
       await Geolocator.getCurrentPosition(
               desiredAccuracy: LocationAccuracy.high)
-          .then((Position position) {
+          .then((Position) {
+        lat = position!.latitude.toString();
+        lon = position!.longitude.toString();
+        // print('POSICION : ' + position.toString());
+        print('LATLON :  ' + lat + lon);
         setState(() => _currentPosition = position);
       }).catchError((e) {
+        print('ERROR : ' + e);
         debugPrint(e);
       });
+    }
+
+// 6.330111-75.5670599
+    Future<void> _showMyDialog() async {
+      //TODO: agregar parametro texto pocision,
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Ubicatión'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text(
+                      position!.latitude.toString()), // cambiar por la pocision
+                  //  Text('Would you like to approve of this message?'),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: const Text('Approve'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return MaterialApp(
@@ -101,13 +138,7 @@ class _CitiesState extends State<Cities> {
               ),
               onPressed: () {
                 _getCurrentPosition();
-                print(_currentAddress);
-                print(_currentPosition.toString());
-                final route = MaterialPageRoute(
-                    builder: (context) =>
-                        Data(Provider.of<DataServices>(context).citySelected));
-                Navigator.push(context, route);
-                splashColor = Colors.red;
+                _showMyDialog();
               },
             ),
             body: Stack(

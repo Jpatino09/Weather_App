@@ -16,7 +16,7 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => DataServices(),
-          lazy: false,
+          // lazy: false,
         ),
       ],
       child: MyApp(),
@@ -40,7 +40,8 @@ class MyApp extends StatelessWidget {
       routes: {
         'home': (context) => Home(),
         'cities': (context) => Cities(),
-        'data': (context) => Data(Provider.of<DataServices>(context).citySelected),
+        'data': (context) =>
+            Data(Provider.of<DataServices>(context).citySelected),
       },
     );
   }

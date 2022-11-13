@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'cities.dart';
 
-void main() => runApp(Home());
+void main() => runApp(const Home());
 
 Text name = const Text('');
 
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +16,7 @@ class Home extends StatelessWidget {
       title: 'Material App',
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
-            backgroundColor: Color.fromARGB(255, 89, 134, 171),
+            backgroundColor: const Color.fromARGB(255, 89, 134, 171),
             child: const Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,
@@ -25,7 +27,7 @@ class Home extends StatelessWidget {
             }),
         body: Stack(children: [
           Container(
-            color: Color.fromARGB(255, 34, 102, 158),
+            color: const Color.fromARGB(255, 12, 12, 12),
             height: double.infinity,
             width: double.infinity,
           ),
@@ -33,14 +35,14 @@ class Home extends StatelessWidget {
             padding: const EdgeInsets.only(
                 top: 180, bottom: 125, right: 50, left: 50),
             child: Column(
-              children: const [
+              children: [
                 CircleAvatar(
                     radius: 120,
-                    backgroundImage: NetworkImage(
-                        'https://us.123rf.com/450wm/benchart/benchart1611/benchart161100031/68606083-ilustraci%C3%B3n-de-un-fondo-de-cielo-dibujos-animados-con-el-sol-que-brilla-detr%C3%A1s-de-una-nube.jpg?ver=6')),
-
-                //child: Image(image: AssetImage()) ),
-                Center(
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(120),
+                        child: const Image(
+                            image: AssetImage('assets/img/soleado.jpg')))),
+                const Center(
                     child: Text(
                   'Weather App',
                   style: TextStyle(

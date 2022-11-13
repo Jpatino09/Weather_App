@@ -3,6 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 
 class Weather {
+  int id;
+  String main;
+  String description;
+  String icon;
+
   Weather({
     required this.id,
     required this.main,
@@ -10,12 +15,7 @@ class Weather {
     required this.icon,
   });
 
-  int id;
-  String main;
-  String description;
-  String icon;
-
-  factory Weather.fromJson(String str) => Weather.fromMap(json.decode(str));
+  //factory Weather.fromJson(String str) => Weather.fromMap(json.decode(str));
 
   factory Weather.fromMap(Map<String, dynamic> json) => Weather(
         id: json["id"],
