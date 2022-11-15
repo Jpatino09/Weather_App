@@ -36,7 +36,6 @@ class _CitiesState extends State<Cities> {
 
   String lat = '';
   String lon = '';
-  Position? _currentPosition;
   Position? position;
   @override
   Widget build(BuildContext context) {
@@ -71,44 +70,26 @@ class _CitiesState extends State<Cities> {
       return true;
     }
 
-    Future<void> _getCurrentPosition() async {
-      final hasPermission = await _handleLocationPermission();
-      if (!hasPermission) return;
-      await Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.high)
-          .then((Position) {
-        lat = position!.latitude.toString();
-        lon = position!.longitude.toString();
-        // print('POSICION : ' + position.toString());
-        print('LATLON :  ' + lat + lon);
-        setState(() => _currentPosition = position);
-      }).catchError((e) {
-        print('ERROR : ' + e);
-        debugPrint(e);
-      });
-    }
-
-// 6.330111-75.5670599
-    Future<void> _showMyDialog() async {
+    // 6.330111-75.5670599
+    Future<void> _showMyDialog() {
       //TODO: agregar parametro texto pocision,
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Ubicatión'),
+            title: const Text('Ubicación'),
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
-                  Text(
-                      position!.latitude.toString()), // cambiar por la pocision
+                  Text('Tu ubicación actual es: Latitud: $lat y Longitud: $lon'), // cambiar por la pocision
                   //  Text('Would you like to approve of this message?'),
                 ],
               ),
             ),
             actions: [
               TextButton(
-                child: const Text('Approve'),
+                child: const Text('Cerrar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -117,6 +98,21 @@ class _CitiesState extends State<Cities> {
           );
         },
       );
+    }
+
+    Future<void> _getCurrentPosition() async {
+      final hasPermission = await _handleLocationPermission();
+      if (!hasPermission) return;
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) {
+        lat = position.latitude.toString();
+        lon = position.longitude.toString();
+        _showMyDialog();
+      }).catchError((e) {
+        print('ERROR : ' + e.toString());
+        debugPrint(e);
+      });
     }
 
     return MaterialApp(
@@ -138,7 +134,6 @@ class _CitiesState extends State<Cities> {
               ),
               onPressed: () {
                 _getCurrentPosition();
-                _showMyDialog();
               },
             ),
             body: Stack(

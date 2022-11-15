@@ -57,6 +57,7 @@ class DataServices extends ChangeNotifier {
 
     assetUrl =
         'http://openweathermap.org/img/wn/${citiesResponse.weather[0].icon}@2x.png';
+    loading = false;
 
     notifyListeners();
   }

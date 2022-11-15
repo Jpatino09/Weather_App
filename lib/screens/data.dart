@@ -13,7 +13,6 @@ class Data extends StatelessWidget {
   String visibility = '';
   String weatherData = '';
   String timeZone = '';
-  bool loading = false;
 
   Data(String city) {
     selectedCity = city;
@@ -85,41 +84,40 @@ class Data extends StatelessWidget {
                             children: [
                               const SizedBox(height: 15),
                               Text(
-                                'name : $selectedCity',
+                                selectedCity.toUpperCase(),
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                     fontFamily: 'Play'),
                               ),
-                              Image.network(
-                                  Provider.of<DataServices>(context).assetUrl),
+                              Provider.of<DataServices>(context).loading ? const CircularProgressIndicator() : Image.network(Provider.of<DataServices>(context).assetUrl),
                               Text(
-                                'Temperature: $temp',
+                                'Temperatura: $temp',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
                               Text(
-                                'Humidity: $humidity',
+                                'Humedad: $humidity',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
                               Text(
-                                'Visibility: $visibility',
+                                'Visibilidad: $visibility',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
                               Text(
-                                'Wind Speed: $windSpeed',
+                                'Velocidad del viento: $windSpeed',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
                               Text(
-                                'Timezone: $timeZone',
+                                'Zona horaria: $timeZone',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
                               Text(
-                                'Weather Data: $weatherData',
+                                'Datos climaticos: $weatherData',
                                 style: const TextStyle(
                                     fontSize: 15, fontFamily: 'Play'),
                               ),
