@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
             }),
         body: Stack(children: [
           Container(
-            color: const Color.fromARGB(255, 12, 12, 12),
+            color: Colors.white, //Color.fromARGB(255, 12, 12, 12),
             height: double.infinity,
             width: double.infinity,
           ),
@@ -46,7 +46,7 @@ class Home extends StatelessWidget {
                     child: Text(
                   'Weather App',
                   style: TextStyle(
-                      fontSize: 44, fontFamily: 'Play', color: Colors.white),
+                      fontSize: 44, fontFamily: 'Play', color: Colors.black),
                 )),
               ],
             ),

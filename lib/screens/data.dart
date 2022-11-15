@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_application/providers/data_services.dart';
-import 'cities.dart';
 import 'home.dart';
 
 void main() => runApp(Data(''));
@@ -16,8 +13,11 @@ class Data extends StatelessWidget {
   String visibility = '';
   String weatherData = '';
   String timeZone = '';
+  bool loading = false;
 
-  Data(String city);
+  Data(String city) {
+    selectedCity = city;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,13 +85,14 @@ class Data extends StatelessWidget {
                             children: [
                               const SizedBox(height: 15),
                               Text(
-                                selectedCity,
+                                'name : $selectedCity',
                                 style: const TextStyle(
-                                    fontSize: 20, fontFamily: 'Play'),
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontFamily: 'Play'),
                               ),
                               Image.network(
-                                Provider.of<DataServices>(context).assetUrl,
-                              ),
+                                  Provider.of<DataServices>(context).assetUrl),
                               Text(
                                 'Temperature: $temp',
                                 style: const TextStyle(

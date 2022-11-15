@@ -20,11 +20,6 @@ class CardData extends StatelessWidget {
               'Name City',
               style: TextStyle(fontSize: 28, fontFamily: 'Play'),
             ),
-            Icon(
-              Icons.sunny_snowing,
-              size: 60,
-              color: Color.fromARGB(255, 230, 186, 74),
-            ),
           ],
         ));
   }

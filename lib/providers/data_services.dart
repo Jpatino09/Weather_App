@@ -1,8 +1,8 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-
+import 'package:weather_application/screens/home.dart';
 import '../models/weather_by_city.dart';
 
 //import 'package:weather_application/screens/cities.dart';
@@ -19,6 +19,7 @@ class DataServices extends ChangeNotifier {
   String weatherData = '';
   String timeZone = '';
   String assetUrl = '';
+  bool loading = true;
 
   DataServices() {
     print('Inicialzando servicios');
@@ -43,8 +44,9 @@ class DataServices extends ChangeNotifier {
 
     final citiesResponse = WeatherByCity.fromJson(response.body);
 
-    //final decodedData = json.decode(response.body); // este creo que se puede borrar
-    // print(decodedData);
+    final decodedData =
+        json.decode(response.body); // este creo que se puede borrar
+    print(decodedData);
     temp = citiesResponse.main.temp.toString();
     humidity = citiesResponse.main.humidity.toString();
     windSpeed = citiesResponse.wind.speed.toString();
@@ -52,6 +54,7 @@ class DataServices extends ChangeNotifier {
     weatherData = citiesResponse.weather[0].description;
     timeZone = citiesResponse.timezone.toString();
     citySelected = citiesResponse.name;
+
     assetUrl =
         'http://openweathermap.org/img/wn/${citiesResponse.weather[0].icon}@2x.png';
 

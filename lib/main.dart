@@ -5,7 +5,7 @@ import 'package:weather_application/screens/cities.dart';
 import 'package:weather_application/screens/data.dart';
 import 'package:weather_application/screens/home.dart';
 
-void main() => runApp(AppState());
+void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
   const AppState({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class AppState extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => DataServices(),
-          // lazy: false,
+          lazy: false,
         ),
       ],
       child: MyApp(),
